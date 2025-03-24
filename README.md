@@ -1,5 +1,8 @@
 # Node.js MongoDB Contacts API
 
+> **Branch:** [hw2-mongodb](https://github.com/leventkoybasi/nodejs-hw-mongodb/tree/hw2-mongodb)  
+> **Deployment:** Bu proje, `hw2-mongodb` branch'inde geliştirilmiş ve bu branch üzerinden deploy edilmiştir.
+
 Welcome to the **Node.js MongoDB Contacts API** project! This project is a RESTful API built with Node.js and Express, leveraging MongoDB for data storage. The API allows you to manage a collection of contacts, providing endpoints to create, read, update, and delete contact information.
 
 ## Features
@@ -26,7 +29,7 @@ Ensure you have the following installed on your local development machine:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/leventkoybasi/nodejs-hw-mongodb.git
+   git clone -b hw2-mongodb https://github.com/leventkoybasi/nodejs-hw-mongodb.git
    cd nodejs-hw-mongodb
    ```
 
@@ -71,7 +74,7 @@ bun run start
 
 ### Deployment
 
-This project is deployed using [Render](https://render.com/). Follow these steps to deploy your own instance:
+This project is deployed using [Render](https://render.com/) from the `hw2-mongodb` branch. Follow these steps to deploy your own instance:
 
 1. **Create a new Web Service** on Render.
 2. **Connect your GitHub repository** to Render.
@@ -93,3 +96,4 @@ For any inquiries or issues, please contact [Levent Koybasi](mailto:leventkoybas
 ---
 
 Thank you for using the Node.js MongoDB Contacts API! We hope it serves your needs well.
+
