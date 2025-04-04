@@ -35,3 +35,8 @@ export const updateContact = async (contactId, newFields, options = {}) => {
   }
   return null;
 };
+
+export const deleteContactById = async (id) => {
+  const contact = await ContactsCollection.findByIdAndDelete(id);
+  return contact;
+};
