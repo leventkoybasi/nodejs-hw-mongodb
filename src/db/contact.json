@@ -1,0 +1,182 @@
+[
+  {
+    "name": "John Doe",
+    "phoneNumber": "123-456-7890",
+    "email": "john.doe@example.com",
+    "isFavourite": true,
+    "contactType": "work",
+    "createdAt": "2025-03-20T12:00:00Z",
+    "updatedAt": "2025-03-20T12:00:00Z"
+  },
+  {
+    "name": "Jane Smith",
+    "phoneNumber": "987-654-3210",
+    "email": "jane.smith@example.com",
+    "isFavourite": false,
+    "contactType": "home",
+    "createdAt": "2025-03-19T10:30:00Z",
+    "updatedAt": "2025-03-19T10:30:00Z"
+  },
+  {
+    "name": "Alice Johnson",
+    "phoneNumber": "456-789-0123",
+    "email": "alice.johnson@example.com",
+    "isFavourite": false,
+    "contactType": "personal",
+    "createdAt": "2025-03-18T08:15:00Z",
+    "updatedAt": "2025-03-18T08:15:00Z"
+  },
+  {
+    "name": "Bob Williams",
+    "phoneNumber": "321-654-9870",
+    "email": "bob.williams@example.com",
+    "isFavourite": true,
+    "contactType": "work",
+    "createdAt": "2025-03-17T14:45:00Z",
+    "updatedAt": "2025-03-17T14:45:00Z"
+  },
+  {
+    "name": "Charlie Brown",
+    "phoneNumber": "555-666-7777",
+    "email": "charlie.brown@example.com",
+    "isFavourite": false,
+    "contactType": "home",
+    "createdAt": "2025-03-16T09:25:00Z",
+    "updatedAt": "2025-03-16T09:25:00Z"
+  },
+  {
+    "name": "David Clark",
+    "phoneNumber": "111-222-3333",
+    "email": "david.clark@example.com",
+    "isFavourite": true,
+    "contactType": "personal",
+    "createdAt": "2025-03-15T16:10:00Z",
+    "updatedAt": "2025-03-15T16:10:00Z"
+  },
+  {
+    "name": "Emma Davis",
+    "phoneNumber": "444-555-6666",
+    "email": "emma.davis@example.com",
+    "isFavourite": false,
+    "contactType": "work",
+    "createdAt": "2025-03-14T11:50:00Z",
+    "updatedAt": "2025-03-14T11:50:00Z"
+  },
+  {
+    "name": "Frank Edwards",
+    "phoneNumber": "777-888-9999",
+    "email": "frank.edwards@example.com",
+    "isFavourite": true,
+    "contactType": "home",
+    "createdAt": "2025-03-13T07:30:00Z",
+    "updatedAt": "2025-03-13T07:30:00Z"
+  },
+  {
+    "name": "Grace Hall",
+    "phoneNumber": "999-000-1111",
+    "email": "grace.hall@example.com",
+    "isFavourite": false,
+    "contactType": "personal",
+    "createdAt": "2025-03-12T15:40:00Z",
+    "updatedAt": "2025-03-12T15:40:00Z"
+  },
+  {
+    "name": "Henry Lee",
+    "phoneNumber": "222-333-4444",
+    "email": "henry.lee@example.com",
+    "isFavourite": false,
+    "contactType": "work",
+    "createdAt": "2025-03-11T12:20:00Z",
+    "updatedAt": "2025-03-11T12:20:00Z"
+  },
+  {
+    "name": "Isla Martinez",
+    "phoneNumber": "555-111-2222",
+    "email": "isla.martinez@example.com",
+    "isFavourite": true,
+    "contactType": "home",
+    "createdAt": "2025-03-10T18:35:00Z",
+    "updatedAt": "2025-03-10T18:35:00Z"
+  },
+  {
+    "name": "Jack Nelson",
+    "phoneNumber": "777-333-5555",
+    "email": "jack.nelson@example.com",
+    "isFavourite": false,
+    "contactType": "personal",
+    "createdAt": "2025-03-09T20:45:00Z",
+    "updatedAt": "2025-03-09T20:45:00Z"
+  },
+  {
+    "name": "Katie Owens",
+    "phoneNumber": "888-444-6666",
+    "email": "katie.owens@example.com",
+    "isFavourite": false,
+    "contactType": "work",
+    "createdAt": "2025-03-08T10:10:00Z",
+    "updatedAt": "2025-03-08T10:10:00Z"
+  },
+  {
+    "name": "Leo Parker",
+    "phoneNumber": "333-777-8888",
+    "email": "leo.parker@example.com",
+    "isFavourite": true,
+    "contactType": "home",
+    "createdAt": "2025-03-07T14:50:00Z",
+    "updatedAt": "2025-03-07T14:50:00Z"
+  },
+  {
+    "name": "Sarah Johnson",
+    "phoneNumber": "222-555-7777",
+    "email": "sarah.johnson@example.com",
+    "isFavourite": true,
+    "contactType": "personal",
+    "createdAt": "2025-03-10T09:15:00Z",
+    "updatedAt": "2025-03-10T09:15:00Z"
+  },
+  {
+    "name": "David Smith",
+    "phoneNumber": "333-444-6666",
+    "email": "david.smith@example.com",
+    "isFavourite": false,
+    "contactType": "work",
+    "createdAt": "2025-02-25T14:45:00Z",
+    "updatedAt": "2025-02-25T14:45:00Z"
+  },
+  {
+    "name": "Emily Carter",
+    "phoneNumber": "555-666-7777",
+    "email": "emily.carter@example.com",
+    "isFavourite": true,
+    "contactType": "family",
+    "createdAt": "2025-03-02T11:30:00Z",
+    "updatedAt": "2025-03-02T11:30:00Z"
+  },
+  {
+    "name": "James Wilson",
+    "phoneNumber": "777-888-9999",
+    "email": "james.wilson@example.com",
+    "isFavourite": false,
+    "contactType": "work",
+    "createdAt": "2025-03-15T16:20:00Z",
+    "updatedAt": "2025-03-15T16:20:00Z"
+  },
+  {
+    "name": "Olivia Brown",
+    "phoneNumber": "999-111-2222",
+    "email": "olivia.brown@example.com",
+    "isFavourite": true,
+    "contactType": "personal",
+    "createdAt": "2025-02-28T08:10:00Z",
+    "updatedAt": "2025-02-28T08:10:00Z"
+  },
+  {
+    "name": "Daniel Harris",
+    "phoneNumber": "123-456-7890",
+    "email": "daniel.harris@example.com",
+    "isFavourite": false,
+    "contactType": "friend",
+    "createdAt": "2025-03-18T12:00:00Z",
+    "updatedAt": "2025-03-18T12:00:00Z"
+  }
+]
