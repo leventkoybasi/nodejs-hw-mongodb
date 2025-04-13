@@ -30,7 +30,7 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
 2. Install dependencies:
 
    ```bash
-   npm install
+   bun install
    ```
 
 3. Create a `.env` file in the root directory and configure the following variables:
@@ -46,13 +46,13 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
 4. Start the server:
 
    ```bash
-   npm start
+   bun run start
    ```
 
    Alternatively, for development with hot-reloading:
 
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 ## API Endpoints
@@ -136,7 +136,7 @@ src/
 Run ESLint to check for code quality:
 
 ```bash
-npm run lint
+bun run lint
 ```
 
 ### Formatting
@@ -144,7 +144,7 @@ npm run lint
 Use Prettier for consistent code formatting:
 
 ```bash
-npm run format
+bun run format
 ```
 
 ## License
