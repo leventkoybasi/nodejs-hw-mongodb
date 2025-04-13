@@ -9,7 +9,8 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
 - **Error Handling**: Centralized error handling with custom middlewares.
 - **Environment Configuration**: Uses `dotenv` for managing environment variables.
 - **Logging**: Integrated with `pino-http` for structured logging.
-- **Validation**: Includes schema validation for contact data.
+- **Validation**: Includes schema validation for contact data using `Joi`.
+- **Utility Functions**: Includes reusable utilities like `readData`, `writeData`, and `createFakeContact`.
 
 ## Prerequisites
 
@@ -79,12 +80,41 @@ curl -X POST http://localhost:3000/contacts \
 -H "Content-Type: application/json" \
 -d '{
   "name": "John Doe",
-  "phoneNumber": "123-456-7890",
+  "phoneNumber": "1234567890",
   "email": "john.doe@example.com",
   "isFavourite": true,
   "contactType": "work"
 }'
 ```
+
+## Validation
+
+The project uses `Joi` for schema validation. Below are the validation schemas:
+
+- **Create Contact Schema**:
+
+  - `name`: String, 3-20 characters, required.
+  - `phoneNumber`: String, 10 digits, cannot start with 0, required.
+  - `email`: Valid email, required.
+  - `isFavourite`: Boolean, required.
+  - `contactType`: Enum (`personal`, `work`, `other`), required.
+
+- **Update Contact Schema**:
+  - Same fields as the create schema, but all are optional.
+
+## Middleware
+
+- **`ctrlWrapper`**: Wraps controllers to handle errors using `try-catch`.
+- **`isValidId`**: Validates MongoDB Object IDs.
+- **`validateBody`**: Validates request bodies against `Joi` schemas.
+- **`notFoundHandler`**: Handles 404 errors.
+- **`errorHandler`**: Handles general and HTTP-specific errors.
+
+## Utility Functions
+
+- **`readData`**: Reads and parses JSON data from a file.
+- **`writeData`**: Writes JSON data to a file.
+- **`createFakeContact`**: Generates a fake contact using `@faker-js/faker`.
 
 ## Project Structure
 
