@@ -6,10 +6,17 @@ import {
   getStudentsById,
   updateContact,
 } from '../services/contacts';
+import { parsePaginationParams } from '../utils/parsePaginationParams';
 
 //GET
 export const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const queryParams = req.query;
+  const { page, perPage } = parsePaginationParams(queryParams);
+
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+  });
 
   res.status(200).send({
     data: contacts,
