@@ -11,12 +11,13 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
 - **Logging**: Integrated with `pino-http` for structured logging.
 - **Validation**: Includes schema validation for contact data using `Joi`.
 - **Utility Functions**: Includes reusable utilities like `readData`, `writeData`, and `createFakeContact`.
+- **Pagination, Sorting, and Filtering**: Supports pagination, sorting, and filtering for contact lists.
 
 ## Prerequisites
 
 - Node.js (v16 or higher)
 - MongoDB Atlas or a local MongoDB instance
-- `bun` (optional, for running scripts)
+- Install [Bun](https://bun.sh/) as the package manager and runtime.
 
 ## Installation
 
@@ -27,7 +28,7 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
    cd nodejs-hw-mongodb
    ```
 
-2. Install dependencies:
+2. Install dependencies using `bun`:
 
    ```bash
    bun install
@@ -43,17 +44,19 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
    MONGODB_DB=your_database_name
    ```
 
-4. Start the server:
+## Running the Server
 
-   ```bash
-   bun run start
-   ```
+Start the server with:
 
-   Alternatively, for development with hot-reloading:
+```bash
+bun run start
+```
 
-   ```bash
-   bun run dev
-   ```
+Alternatively, for development with hot-reloading:
+
+```bash
+bun run dev
+```
 
 ## API Endpoints
 
@@ -71,6 +74,24 @@ http://localhost:<PORT>/contacts
 - **PATCH /contacts/:contactId**: Update a contact by ID.
 - **DELETE /contacts/:contactId**: Delete a contact by ID.
 
+### Query Parameters for Contacts API
+
+The `contacts` endpoint supports the following query parameters for pagination, sorting, and filtering:
+
+- **Pagination**:
+
+  - `page`: The page number to retrieve (default: `1`).
+  - `perPage`: The number of items per page (default: `10`).
+
+- **Sorting**:
+
+  - `sortBy`: The field to sort by (e.g., `name`, `email`).
+  - `sortOrder`: The order of sorting (`asc` for ascending, `desc` for descending).
+
+- **Filtering**:
+  - `type`: Filter by contact type (e.g., `work`, `personal`).
+  - `isFavourite`: Filter by favorite status (`true` or `false`).
+
 ### Example Request
 
 #### Create a Contact
@@ -86,6 +107,35 @@ curl -X POST http://localhost:3000/contacts \
   "contactType": "work"
 }'
 ```
+
+To retrieve a paginated, sorted, and filtered list of contacts:
+
+```
+GET /contacts/?page=1&perPage=10&sortBy=name&sortOrder=asc&type=work&isFavourite=true
+```
+
+### Explanation of Query Parameters
+
+1. **Pagination**:
+
+   - `page=1`: Fetches the first page of results.
+   - `perPage=10`: Limits the results to 10 contacts per page.
+
+2. **Sorting**:
+
+   - `sortBy=name`: Sorts the results by the `name` field.
+   - `sortOrder=asc`: Sorts in ascending order. Use `desc` for descending order.
+
+3. **Filtering**:
+   - `type=work`: Filters contacts to include only those with the type `work`.
+   - `isFavourite=true`: Filters contacts to include only those marked as favorite.
+
+### Additional Notes
+
+- You can combine or omit query parameters as needed. For example:
+  - `GET /contacts/?sortBy=email&sortOrder=desc`: Sorts contacts by email in descending order.
+  - `GET /contacts/?type=personal`: Filters contacts by type `personal`.
+  - `GET /contacts/`: Retrieves all contacts without any filters or sorting.
 
 ## Validation
 
@@ -147,6 +197,10 @@ Use Prettier for consistent code formatting:
 bun run format
 ```
 
-## License
+## Testing
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+Run tests using `bun`:
+
+```bash
+bun run test
+```
