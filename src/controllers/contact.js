@@ -6,12 +6,28 @@ import {
   getStudentsById,
   updateContact,
 } from '../services/contacts';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 //GET
 export const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const queryParams = req.query;
+  const { page, perPage } = parsePaginationParams(queryParams);
+  const { sortBy, sortOrder } = parseSortParams(queryParams);
+  const filter = parseFilterParams(queryParams);
+
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
 
   res.status(200).send({
+    message: 'Contacts fetched successfully',
+    status: 200,
     data: contacts,
   });
 };

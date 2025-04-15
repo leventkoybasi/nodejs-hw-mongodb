@@ -1,8 +1,38 @@
+import { SORT_ORDER } from '../constant/constantContact.js';
 import { ContactsCollection } from '../db/model/contactSchema.js';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-export const getAllContacts = async () => {
-  const contacts = await ContactsCollection.find();
-  return contacts;
+export const getAllContacts = async ({
+  page = 1,
+  perPage = 10,
+  sortBy = '_id',
+  sortOrder = SORT_ORDER.ASC,
+  filter = {},
+}) => {
+  const contactQuerry = ContactsCollection.find();
+
+  if (filter.contactType) {
+    contactQuerry.where('contactType').in([filter.contactType]);
+  }
+  if (filter.isFavourite !== undefined) {
+    contactQuerry.where('isFavourite').in([filter.isFavourite]);
+  }
+
+  const totalCount = await ContactsCollection.find()
+    .merge(contactQuerry)
+    .countDocuments();
+
+  const contacts = await contactQuerry
+    .skip((page - 1) * perPage)
+    .limit(perPage)
+    .sort({ [sortBy]: sortOrder })
+    .exec();
+
+  const pagination = calculatePaginationData(totalCount, page, perPage);
+  return {
+    data: contacts,
+    ...pagination,
+  };
 };
 
 export const getStudentsById = async (id) => {
