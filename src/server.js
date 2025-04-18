@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import contactRouter from './routers/contact.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import authRouter from './routers/auth.js';
 
 dotenv.config();
 // eslint-disable-next-line no-undef
@@ -28,6 +29,7 @@ export const setupServer = () => {
 
   //Contact routes endpoints
   app.use('/contacts', contactRouter);
+  app.use('/auth', authRouter);
 
   //Not Found Handle Middleware (404 error)
   app.use(notFoundHandler);
