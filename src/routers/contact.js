@@ -13,8 +13,10 @@ import {
   createContactSchema,
   updateContactSchema,
 } from '../validators/contact';
+import { authorize } from '../middlewares/authenticate';
 
 const contactRouter = Router();
+contactRouter.use(authorize); // Middleware to protect all routes in this router
 
 //Contact routes endpoints
 contactRouter.get('/', ctrlWrapper(getContactsController));
