@@ -1,40 +1,48 @@
-# Node.js Homework: MongoDB Contacts API
+# Node.js MongoDB Contacts API
 
-This project is a Node.js-based RESTful API for managing contacts, built with Express.js and MongoDB. It supports CRUD operations for contacts and includes features like error handling, environment configuration, and database connection.
+This project is a **RESTful API** built with **Node.js**, **Express.js**, and **MongoDB**. It provides a robust solution for managing contacts, including features like authentication, CRUD operations, pagination, sorting, and filtering. The project is designed with modern best practices and uses **Bun** as the runtime and package manager for improved performance and developer experience.
+
+---
 
 ## Features
 
+- **Authentication**: Secure user authentication with hashed passwords and session management.
 - **CRUD Operations**: Create, Read, Update, and Delete contacts.
-- **MongoDB Integration**: Uses Mongoose for database modeling and interaction.
+- **MongoDB Integration**: Uses **Mongoose** for schema modeling and database interaction.
+- **Validation**: Input validation using **Joi** for both user and contact data.
+- **Pagination, Sorting, and Filtering**: Supports advanced query capabilities for contact lists.
 - **Error Handling**: Centralized error handling with custom middlewares.
-- **Environment Configuration**: Uses `dotenv` for managing environment variables.
-- **Logging**: Integrated with `pino-http` for structured logging.
-- **Validation**: Includes schema validation for contact data using `Joi`.
-- **Utility Functions**: Includes reusable utilities like `readData`, `writeData`, and `createFakeContact`.
-- **Pagination, Sorting, and Filtering**: Supports pagination, sorting, and filtering for contact lists.
+- **Environment Configuration**: Uses `.env` for managing environment variables.
+- **Logging**: Integrated with **Pino** for structured and efficient logging.
+- **Modern Development Workflow**: Built with **Bun** for faster runtime and dependency management.
+
+---
 
 ## Prerequisites
 
-- Node.js (v16 or higher)
-- MongoDB Atlas or a local MongoDB instance
-- Install [Bun](https://bun.sh/) as the package manager and runtime.
+- **Node.js**: v16 or higher
+- **MongoDB**: Atlas or a local MongoDB instance
+- **Bun**: Installed as the runtime and package manager ([Install Bun](https://bun.sh/))
+
+---
 
 ## Installation
 
-1. Clone the repository:
+1. **Clone the Repository**:
 
    ```bash
    git clone https://github.com/your-username/nodejs-hw-mongodb.git
    cd nodejs-hw-mongodb
    ```
 
-2. Install dependencies using `bun`:
+2. **Install Dependencies**:
 
    ```bash
    bun install
    ```
 
-3. Create a `.env` file in the root directory and configure the following variables:
+3. **Set Up Environment Variables**:
+   Create a `.env` file in the root directory and configure the following variables:
 
    ```env
    PORT=3000
@@ -44,127 +52,195 @@ This project is a Node.js-based RESTful API for managing contacts, built with Ex
    MONGODB_DB=your_database_name
    ```
 
-## Running the Server
+4. **Run the Server**:
+   - For production:
+     ```bash
+     bun run start
+     ```
+   - For development with hot-reloading:
+     ```bash
+     bun run dev
+     ```
 
-Start the server with:
-
-```bash
-bun run start
-```
-
-Alternatively, for development with hot-reloading:
-
-```bash
-bun run dev
-```
+---
 
 ## API Endpoints
 
 ### Base URL
 
 ```
-http://localhost:<PORT>/contacts
+http://localhost:<PORT>
 ```
 
-### Endpoints
+### Authentication Routes (`/auth`)
 
-- **GET /contacts**: Retrieve all contacts.
-- **GET /contacts/:contactId**: Retrieve a contact by ID.
-- **POST /contacts**: Create a new contact.
-- **PATCH /contacts/:contactId**: Update a contact by ID.
-- **DELETE /contacts/:contactId**: Delete a contact by ID.
+1. **POST /auth/register**  
+   **Description**: Registers a new user.  
+   **Request Body**:
 
-### Query Parameters for Contacts API
+   ```json
+   {
+     "name": "John Doe",
+     "email": "john.doe@example.com",
+     "password": "securepassword"
+   }
+   ```
 
-The `contacts` endpoint supports the following query parameters for pagination, sorting, and filtering:
+   **Response**:
 
-- **Pagination**:
+   - `201 Created`: User successfully registered.
 
-  - `page`: The page number to retrieve (default: `1`).
-  - `perPage`: The number of items per page (default: `10`).
+2. **POST /auth/login**  
+   **Description**: Logs in a user and returns an access token.  
+   **Request Body**:
 
-- **Sorting**:
+   ```json
+   {
+     "email": "john.doe@example.com",
+     "password": "securepassword"
+   }
+   ```
 
-  - `sortBy`: The field to sort by (e.g., `name`, `email`).
-  - `sortOrder`: The order of sorting (`asc` for ascending, `desc` for descending).
+   **Response**:
 
-- **Filtering**:
-  - `type`: Filter by contact type (e.g., `work`, `personal`).
-  - `isFavourite`: Filter by favorite status (`true` or `false`).
+   - `200 OK`: Returns an access token.
 
-### Example Request
+3. **POST /auth/logout**  
+   **Description**: Logs out the user by invalidating the session.  
+   **Headers**:
 
-#### Create a Contact
+   ```text
+   Authorization: Bearer <accessToken>
+   ```
 
-```bash
-curl -X POST http://localhost:3000/contacts \
--H "Content-Type: application/json" \
--d '{
-  "name": "John Doe",
-  "phoneNumber": "1234567890",
-  "email": "john.doe@example.com",
-  "isFavourite": true,
-  "contactType": "work"
-}'
-```
+   **Response**:
 
-To retrieve a paginated, sorted, and filtered list of contacts:
+   - `204 No Content`: User successfully logged out.
 
-```
-GET /contacts/?page=1&perPage=10&sortBy=name&sortOrder=asc&type=work&isFavourite=true
-```
+4. **POST /auth/refresh**  
+   **Description**: Refreshes the access token using the refresh token.  
+   **Response**:
+   - `200 OK`: Returns a new access token.
 
-### Explanation of Query Parameters
+---
 
-1. **Pagination**:
+### Contact Routes (`/contacts`)
 
-   - `page=1`: Fetches the first page of results.
-   - `perPage=10`: Limits the results to 10 contacts per page.
+1. **GET /contacts**  
+   **Description**: Retrieves a paginated, sorted, and filtered list of contacts.  
+   **Query Parameters**:
 
-2. **Sorting**:
+   - `page`: Page number (default: `1`)
+   - `perPage`: Number of items per page (default: `10`)
+   - `sortBy`: Field to sort by (e.g., `name`, `email`)
+   - `sortOrder`: Sorting order (`asc` or `desc`)
+   - `type`: Filter by contact type (`work`, `personal`, `home`)
+   - `isFavourite`: Filter by favorite status (`true` or `false`)  
+     **Headers**:
 
-   - `sortBy=name`: Sorts the results by the `name` field.
-   - `sortOrder=asc`: Sorts in ascending order. Use `desc` for descending order.
+   ```text
+   Authorization: Bearer <accessToken>
+   ```
 
-3. **Filtering**:
-   - `type=work`: Filters contacts to include only those with the type `work`.
-   - `isFavourite=true`: Filters contacts to include only those marked as favorite.
+   **Response**:
 
-### Additional Notes
+   - `200 OK`: Returns a list of contacts.
 
-- You can combine or omit query parameters as needed. For example:
-  - `GET /contacts/?sortBy=email&sortOrder=desc`: Sorts contacts by email in descending order.
-  - `GET /contacts/?type=personal`: Filters contacts by type `personal`.
-  - `GET /contacts/`: Retrieves all contacts without any filters or sorting.
+2. **GET /contacts/:contactId**  
+   **Description**: Retrieves a specific contact by its ID.  
+   **Headers**:
+
+   ```text
+   Authorization: Bearer <accessToken>
+   ```
+
+   **Response**:
+
+   - `200 OK`: Returns the contact details.
+   - `404 Not Found`: Contact not found.
+
+3. **POST /contacts**  
+   **Description**: Creates a new contact.  
+   **Request Body**:
+
+   ```json
+   {
+     "name": "Jane Doe",
+     "phoneNumber": "1234567890",
+     "email": "jane.doe@example.com",
+     "isFavourite": true,
+     "contactType": "work"
+   }
+   ```
+
+   **Headers**:
+
+   ```text
+   Authorization: Bearer <accessToken>
+   ```
+
+   **Response**:
+
+   - `201 Created`: Contact successfully created.
+
+4. **PATCH /contacts/:contactId**  
+   **Description**: Updates an existing contact.  
+   **Request Body**:
+
+   ```json
+   {
+     "name": "Jane Smith",
+     "isFavourite": false
+   }
+   ```
+
+   **Headers**:
+
+   ```text
+   Authorization: Bearer <accessToken>
+   ```
+
+   **Response**:
+
+   - `200 OK`: Contact successfully updated.
+   - `404 Not Found`: Contact not found.
+
+5. **DELETE /contacts/:contactId**  
+   **Description**: Deletes a contact by its ID.  
+   **Headers**:
+   ```text
+   Authorization: Bearer <accessToken>
+   ```
+   **Response**:
+   - `200 OK`: Contact successfully deleted.
+   - `404 Not Found`: Contact not found.
+
+---
 
 ## Validation
 
-The project uses `Joi` for schema validation. Below are the validation schemas:
+### User Validation
 
-- **Create Contact Schema**:
+- **Register**:
+  - `name`: String, 3-30 characters, required.
+  - `email`: Valid email, required.
+  - `password`: String, 6-30 characters, required.
+- **Login**:
+  - `email`: Valid email, required.
+  - `password`: String, 6-30 characters, required.
 
+### Contact Validation
+
+- **Create**:
   - `name`: String, 3-20 characters, required.
   - `phoneNumber`: String, 10 digits, cannot start with 0, required.
   - `email`: Valid email, required.
   - `isFavourite`: Boolean, required.
-  - `contactType`: Enum (`personal`, `work`, `other`), required.
+  - `contactType`: Enum (`personal`, `work`, `home`), required.
+- **Update**:
+  - Same fields as create, but all are optional.
 
-- **Update Contact Schema**:
-  - Same fields as the create schema, but all are optional.
-
-## Middleware
-
-- **`ctrlWrapper`**: Wraps controllers to handle errors using `try-catch`.
-- **`isValidId`**: Validates MongoDB Object IDs.
-- **`validateBody`**: Validates request bodies against `Joi` schemas.
-- **`notFoundHandler`**: Handles 404 errors.
-- **`errorHandler`**: Handles general and HTTP-specific errors.
-
-## Utility Functions
-
-- **`readData`**: Reads and parses JSON data from a file.
-- **`writeData`**: Writes JSON data to a file.
-- **`createFakeContact`**: Generates a fake contact using `@faker-js/faker`.
+---
 
 ## Project Structure
 
@@ -178,6 +254,8 @@ src/
 ├── utils/             # Utility functions
 └── index.js           # Entry point
 ```
+
+---
 
 ## Development
 
@@ -197,6 +275,8 @@ Use Prettier for consistent code formatting:
 bun run format
 ```
 
+---
+
 ## Testing
 
 Run tests using `bun`:
@@ -204,3 +284,11 @@ Run tests using `bun`:
 ```bash
 bun run test
 ```
+
+---
+
+## Notes
+
+- This project uses **Bun** for faster runtime and dependency management.
+- MongoDB is used as the database, and all models are defined using **Mongoose**.
+- The project is designed with scalability and maintainability in mind, following modern best practices.

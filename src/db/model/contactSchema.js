@@ -22,6 +22,11 @@ const contactsSchema = new Schema(
       type: String,
       enum: ['work', 'home', 'personal'],
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true, // Her contact bir kullanıcıya ait olmalı
+    },
   },
   {
     timestamps: true,

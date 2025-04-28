@@ -23,7 +23,9 @@ export const getContactsController = async (req, res) => {
     sortBy,
     sortOrder,
     filter,
+    userId: req.user._id,
   });
+  console.log('CONTACTS :', contacts);
 
   res.status(200).send({
     message: 'Contacts fetched successfully',
@@ -50,7 +52,10 @@ export const getContactByIdController = async (req, res) => {
 //POST
 
 export const postContactController = async (req, res) => {
-  const newContact = req.body;
+  const newContact = {
+    ...req.body,
+    userId: req.user._id,
+  };
   const createdContact = await createContact(newContact);
 
   res.status(201).send({
