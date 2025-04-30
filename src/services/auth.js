@@ -4,6 +4,12 @@ import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
 import { SessionsCollection } from '../db/model/Session.js';
 import { FIFTEEN_MINUITES, ONE_DAY } from '../constant/constantContact.js';
+import { sendMail } from '../utils/sendMail.js';
+import { env } from '../utils/env.js';
+import jwt from 'jsonwebtoken';
+import path from 'path';
+import fs from 'fs/promises';
+import handlebars from 'handlebars';
 
 export const registerUser = async (userData) => {
   const { email, password } = userData;
@@ -87,4 +93,68 @@ export const refreshUser = async ({ refreshToken, sessionId }) => {
 
 export const logoutUser = async (sessionId) => {
   await SessionsCollection.findByIdAndDelete(sessionId);
+};
+
+export const requestResetEmnail = async (email) => {
+  const user = await UsersCollection.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  //TOKEN OLUSTURMA
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email: user.email,
+    },
+    env('JWT_SECRET'),
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  // eslint-disable-next-line no-undef
+  const TEMPLATE_DIR = path.join(process.cwd(), 'src', 'templates');
+  const templatePath = path.join(TEMPLATE_DIR, 'reset-password-mail.html');
+  const templateContent = await fs.readFile(templatePath, 'utf-8');
+  const temmplate = handlebars.compile(templateContent.toString());
+  const htmlContent = temmplate({
+    name: user.name,
+    url: `http://localhost:3000/auth/reset-password?token=${resetToken}`,
+  });
+
+  //EMAIL GONDERME
+  await sendMail({
+    from: env('SMTP_FROM'),
+    to: user.email,
+    subject: 'Sifre Sifirlama Maili',
+    html: htmlContent,
+  });
+  return true;
+};
+
+export const resetPassword = async (token, newPassword) => {
+  const jwtSecret = env('JWT_SECRET');
+
+  const decodedToken = jwt.verify(token, jwtSecret);
+
+  if (!decodedToken) {
+    throw createHttpError(401, 'Invalid token');
+  }
+
+  const userId = decodedToken.sub;
+  const userEmail = decodedToken.email;
+
+  const user = await UsersCollection.findOne({ _id: userId, email: userEmail });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await UsersCollection.findByIdAndUpdate(userId, {
+    password: hashedPassword,
+  });
+
+  return true;
 };
