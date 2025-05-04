@@ -7,6 +7,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_FOLDER } from './constant/constantContact.js';
 
 dotenv.config();
 // eslint-disable-next-line no-undef
@@ -21,6 +22,8 @@ export const setupServer = () => {
   app.use(cookieParser());
   //Middleware to parse JSON request bodies
   app.use(express.json());
+  // Middleware to serve static files from the uploads directory.
+  app.use('/uploads', express.static(UPLOAD_FOLDER));
   // Middleware to PINO
   app.use(
     pino({

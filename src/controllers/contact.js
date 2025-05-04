@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import createHttpError from 'http-errors';
 import {
   createContact,
@@ -9,6 +10,8 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
 
 //GET
 export const getContactsController = async (req, res) => {
@@ -52,11 +55,31 @@ export const getContactByIdController = async (req, res) => {
 //POST
 
 export const postContactController = async (req, res) => {
+  req.user = { _id: '680eb81746bb9d4fc5b0ddaa' }; // Bu kisim normalde authorize middleware'i ile yapiliyor yorum satirina aldigimiz icin burda tekrardan verdim.
+
   const newContact = {
     ...req.body,
     userId: req.user._id,
   };
-  const createdContact = await createContact(newContact);
+  const photo = req.file;
+  let photoUrl = null;
+
+  if (photo) {
+    if (process.env.ENABLE_CLOUDINARY === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  if (photo) {
+    newContact.photo = photo.filename;
+  }
+
+  const createdContact = await createContact({
+    ...newContact,
+    photo: photoUrl,
+  });
 
   res.status(201).send({
     message: 'Contact created successfully',
@@ -68,7 +91,20 @@ export const postContactController = async (req, res) => {
 //PATCH
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
-  const newFields = req.body;
+  const photo = req.file;
+  const newFields = {
+    ...req.body,
+  };
+
+  if (photo) {
+    let photoUrl;
+    if (process.env.ENABLE_CLOUDINARY === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+    newFields.photo = photoUrl;
+  }
 
   const updatedContact = await updateContact(contactId, newFields, {
     upsert: false,
