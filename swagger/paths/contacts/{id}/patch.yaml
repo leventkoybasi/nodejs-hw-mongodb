@@ -1,0 +1,61 @@
+tags:
+  - Students
+summary: Update a contact
+description: Update an existing contact by its ID for the authenticated user.
+operationId: updateContact
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
+    required: true
+    description: The contact ID
+    schema:
+      type: string
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: 'Jane Smith'
+          phoneNumber:
+            type: string
+            example: '5559876543'
+          email:
+            type: string
+            example: 'jane.smith@example.com'
+          isFavourite:
+            type: boolean
+            example: true
+          contactType:
+            type: string
+            enum: [work, home, personal]
+            example: personal
+responses:
+  '200':
+    description: Contact updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Contact updated successfully
+            status:
+              type: integer
+              example: 200
+            data:
+              $ref: ../../../components/schemas/contact.yaml
+  '400':
+    description: Validation error
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '404':
+    description: Contact not found
+  '500':
+    description: Internal server error

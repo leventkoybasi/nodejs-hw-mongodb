@@ -1,48 +1,48 @@
 # Node.js MongoDB Contacts API
 
-This project is a **RESTful API** built with **Node.js**, **Express.js**, and **MongoDB**. It provides a robust solution for managing contacts, including features like authentication, CRUD operations, pagination, sorting, and filtering. The project is designed with modern best practices and uses **Bun** as the runtime and package manager for improved performance and developer experience.
+This project is a modern **RESTful API** developed using **Node.js**, **Express.js**, and **MongoDB**. It offers advanced features for contact management, including authentication, CRUD operations, pagination, sorting, and filtering. The project runs with **Bun** and is structured according to best practices.
 
 ---
 
 ## Features
 
-- **Authentication**: Secure user authentication with hashed passwords and session management.
-- **CRUD Operations**: Create, Read, Update, and Delete contacts.
-- **MongoDB Integration**: Uses **Mongoose** for schema modeling and database interaction.
-- **Validation**: Input validation using **Joi** for both user and contact data.
-- **Pagination, Sorting, and Filtering**: Supports advanced query capabilities for contact lists.
-- **Error Handling**: Centralized error handling with custom middlewares.
-- **Environment Configuration**: Uses `.env` for managing environment variables.
-- **Logging**: Integrated with **Pino** for structured and efficient logging.
-- **Modern Development Workflow**: Built with **Bun** for faster runtime and dependency management.
+- **Authentication**: Secure user sessions with JWT and password hashing.
+- **Contact Management**: Add, list, update, and delete contacts (CRUD).
+- **MongoDB Integration**: Schema-based data modeling with **Mongoose**.
+- **Validation**: User and contact data validation with **Joi**.
+- **Pagination, Sorting, Filtering**: Advanced query support for contact lists.
+- **Error Handling**: Centralized error management and custom error messages.
+- **Environment Variables**: Configuration via `.env` file.
+- **Logging**: Fast and structured logging with **Pino**.
+- **Modern Development**: Fast runtime and dependency management with **Bun**.
 
 ---
 
-## Prerequisites
+## Requirements
 
 - **Node.js**: v16 or higher
-- **MongoDB**: Atlas or a local MongoDB instance
-- **Bun**: Installed as the runtime and package manager ([Install Bun](https://bun.sh/))
+- **MongoDB**: Atlas or local installation
+- **Bun**: [Installation guide](https://bun.sh/)
 
 ---
 
 ## Installation
 
-1. **Clone the Repository**:
+1. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/your-username/nodejs-hw-mongodb.git
    cd nodejs-hw-mongodb
    ```
 
-2. **Install Dependencies**:
+2. **Install Dependencies:**
 
    ```bash
    bun install
    ```
 
-3. **Set Up Environment Variables**:
-   Create a `.env` file in the root directory and configure the following variables:
+3. **Set Environment Variables:**
+   Create a `.env` file in the project root and enter the following variables:
 
    ```env
    PORT=3000
@@ -52,12 +52,12 @@ This project is a **RESTful API** built with **Node.js**, **Express.js**, and **
    MONGODB_DB=your_database_name
    ```
 
-4. **Run the Server**:
-   - For production:
+4. **Start the Server:**
+   - Production:
      ```bash
      bun run start
      ```
-   - For development with hot-reloading:
+   - Development (with hot-reload):
      ```bash
      bun run dev
      ```
@@ -72,173 +72,121 @@ This project is a **RESTful API** built with **Node.js**, **Express.js**, and **
 http://localhost:<PORT>
 ```
 
-### Authentication Routes (`/auth`)
+### Authentication (`/auth`)
 
-1. **POST /auth/register**  
-   **Description**: Registers a new user.  
-   **Request Body**:
+- **POST /auth/register**  
+  Register a new user.
 
-   ```json
-   {
-     "name": "John Doe",
-     "email": "john.doe@example.com",
-     "password": "securepassword"
-   }
-   ```
+  ```json
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "securepassword"
+  }
+  ```
 
-   **Response**:
+  Response: `201 Created`
 
-   - `201 Created`: User successfully registered.
+- **POST /auth/login**  
+  Login and receive an access token.
 
-2. **POST /auth/login**  
-   **Description**: Logs in a user and returns an access token.  
-   **Request Body**:
+  ```json
+  {
+    "email": "john.doe@example.com",
+    "password": "securepassword"
+  }
+  ```
 
-   ```json
-   {
-     "email": "john.doe@example.com",
-     "password": "securepassword"
-   }
-   ```
+  Response: `200 OK` (returns access token)
 
-   **Response**:
+- **POST /auth/logout**  
+  Logout, requires access token.
 
-   - `200 OK`: Returns an access token.
+  ```
+  Authorization: Bearer <accessToken>
+  ```
 
-3. **POST /auth/logout**  
-   **Description**: Logs out the user by invalidating the session.  
-   **Headers**:
+  Response: `204 No Content`
 
-   ```text
-   Authorization: Bearer <accessToken>
-   ```
-
-   **Response**:
-
-   - `204 No Content`: User successfully logged out.
-
-4. **POST /auth/refresh**  
-   **Description**: Refreshes the access token using the refresh token.  
-   **Response**:
-   - `200 OK`: Returns a new access token.
+- **POST /auth/refresh**  
+  Obtain a new access token using the refresh token.
+  Response: `200 OK`
 
 ---
 
-### Contact Routes (`/contacts`)
+### Contact Operations (`/contacts`)
 
-1. **GET /contacts**  
-   **Description**: Retrieves a paginated, sorted, and filtered list of contacts.  
-   **Query Parameters**:
+- **GET /contacts**  
+  Retrieve the contact list with pagination, sorting, and filtering.
 
-   - `page`: Page number (default: `1`)
-   - `perPage`: Number of items per page (default: `10`)
-   - `sortBy`: Field to sort by (e.g., `name`, `email`)
-   - `sortOrder`: Sorting order (`asc` or `desc`)
-   - `type`: Filter by contact type (`work`, `personal`, `home`)
-   - `isFavourite`: Filter by favorite status (`true` or `false`)  
-     **Headers**:
+  - Query parameters: `page`, `perPage`, `sortBy`, `sortOrder`, `type`, `isFavourite`
+  - Header: `Authorization: Bearer <accessToken>`
+  - Response: `200 OK`
 
-   ```text
-   Authorization: Bearer <accessToken>
-   ```
+- **GET /contacts/:contactId**  
+  Retrieve a specific contact.
 
-   **Response**:
+  - Header: `Authorization: Bearer <accessToken>`
+  - Response: `200 OK` or `404 Not Found`
 
-   - `200 OK`: Returns a list of contacts.
+- **POST /contacts**  
+  Add a new contact.
 
-2. **GET /contacts/:contactId**  
-   **Description**: Retrieves a specific contact by its ID.  
-   **Headers**:
+  ```json
+  {
+    "name": "Jane Doe",
+    "phoneNumber": "1234567890",
+    "email": "jane.doe@example.com",
+    "isFavourite": true,
+    "contactType": "work"
+  }
+  ```
 
-   ```text
-   Authorization: Bearer <accessToken>
-   ```
+  - Header: `Authorization: Bearer <accessToken>`
+  - Response: `201 Created`
 
-   **Response**:
+- **PATCH /contacts/:contactId**  
+  Update a contact.
 
-   - `200 OK`: Returns the contact details.
-   - `404 Not Found`: Contact not found.
+  ```json
+  {
+    "name": "Jane Smith",
+    "isFavourite": false
+  }
+  ```
 
-3. **POST /contacts**  
-   **Description**: Creates a new contact.  
-   **Request Body**:
+  - Header: `Authorization: Bearer <accessToken>`
+  - Response: `200 OK` or `404 Not Found`
 
-   ```json
-   {
-     "name": "Jane Doe",
-     "phoneNumber": "1234567890",
-     "email": "jane.doe@example.com",
-     "isFavourite": true,
-     "contactType": "work"
-   }
-   ```
-
-   **Headers**:
-
-   ```text
-   Authorization: Bearer <accessToken>
-   ```
-
-   **Response**:
-
-   - `201 Created`: Contact successfully created.
-
-4. **PATCH /contacts/:contactId**  
-   **Description**: Updates an existing contact.  
-   **Request Body**:
-
-   ```json
-   {
-     "name": "Jane Smith",
-     "isFavourite": false
-   }
-   ```
-
-   **Headers**:
-
-   ```text
-   Authorization: Bearer <accessToken>
-   ```
-
-   **Response**:
-
-   - `200 OK`: Contact successfully updated.
-   - `404 Not Found`: Contact not found.
-
-5. **DELETE /contacts/:contactId**  
-   **Description**: Deletes a contact by its ID.  
-   **Headers**:
-   ```text
-   Authorization: Bearer <accessToken>
-   ```
-   **Response**:
-   - `200 OK`: Contact successfully deleted.
-   - `404 Not Found`: Contact not found.
+- **DELETE /contacts/:contactId**  
+  Delete a contact.
+  - Header: `Authorization: Bearer <accessToken>`
+  - Response: `200 OK` or `404 Not Found`
 
 ---
 
-## Validation
+## Validation Rules
 
-### User Validation
+### User
 
 - **Register**:
-  - `name`: String, 3-30 characters, required.
-  - `email`: Valid email, required.
-  - `password`: String, 6-30 characters, required.
+  - `name`: Required string, 3-30 characters
+  - `email`: Valid email, required
+  - `password`: Required string, 6-30 characters
 - **Login**:
-  - `email`: Valid email, required.
-  - `password`: String, 6-30 characters, required.
+  - `email`: Valid email, required
+  - `password`: Required string, 6-30 characters
 
-### Contact Validation
+### Contact
 
 - **Create**:
-  - `name`: String, 3-20 characters, required.
-  - `phoneNumber`: String, 10 digits, cannot start with 0, required.
-  - `email`: Valid email, required.
-  - `isFavourite`: Boolean, required.
-  - `contactType`: Enum (`personal`, `work`, `home`), required.
+  - `name`: Required string, 3-20 characters
+  - `phoneNumber`: Required string, 10 digits, cannot start with 0
+  - `email`: Valid email, required
+  - `isFavourite`: Boolean, required
+  - `contactType`: `personal`, `work`, `home` (enum), required
 - **Update**:
-  - Same fields as create, but all are optional.
+  - All fields optional, must comply with the above rules
 
 ---
 
@@ -259,17 +207,13 @@ src/
 
 ## Development
 
-### Linting
-
-Run ESLint to check for code quality:
+### Lint
 
 ```bash
 bun run lint
 ```
 
-### Formatting
-
-Use Prettier for consistent code formatting:
+### Format
 
 ```bash
 bun run format
@@ -277,9 +221,7 @@ bun run format
 
 ---
 
-## Testing
-
-Run tests using `bun`:
+## Test
 
 ```bash
 bun run test
@@ -289,6 +231,8 @@ bun run test
 
 ## Notes
 
-- This project uses **Bun** for faster runtime and dependency management.
-- MongoDB is used as the database, and all models are defined using **Mongoose**.
-- The project is designed with scalability and maintainability in mind, following modern best practices.
+- The project offers a fast and modern development experience with **Bun**.
+- All models are defined using **Mongoose**.
+- The codebase is designed for scalability and maintainability.
+- Error handling and logging are managed centrally.
+- Advanced API features make it suitable for real-world applications.

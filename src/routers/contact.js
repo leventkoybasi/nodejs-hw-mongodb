@@ -17,7 +17,7 @@ import { authorize } from '../middlewares/authenticate';
 import { upload } from '../middlewares/upload.js';
 
 const contactRouter = Router();
-// contactRouter.use(authorize); // Middleware to protect all routes in this router
+contactRouter.use(authorize); // Middleware to protect all routes in this router
 
 //Contact routes endpoints
 contactRouter.get('/', ctrlWrapper(getContactsController));
@@ -29,14 +29,14 @@ contactRouter.get(
 contactRouter.post(
   '/',
   upload.single('photo'),
-  // validateBody(createContactSchema),
+  validateBody(createContactSchema),
   ctrlWrapper(postContactController),
 );
 contactRouter.patch(
   '/:contactId',
   upload.single('photo'),
   isValidId,
-  // validateBody(updateContactSchema),
+  validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 contactRouter.delete(

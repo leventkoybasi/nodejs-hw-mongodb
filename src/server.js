@@ -8,6 +8,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { UPLOAD_FOLDER } from './constant/constantContact.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 dotenv.config();
 // eslint-disable-next-line no-undef
@@ -24,6 +25,8 @@ export const setupServer = () => {
   app.use(express.json());
   // Middleware to serve static files from the uploads directory.
   app.use('/uploads', express.static(UPLOAD_FOLDER));
+  // API Documentation Swagger DOCS
+  app.use('/api-docs', swaggerDocs());
   // Middleware to PINO
   app.use(
     pino({

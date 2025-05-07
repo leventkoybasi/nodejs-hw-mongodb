@@ -1,0 +1,88 @@
+tags:
+  - Students
+summary: Get all contacts
+description: Retrieve a paginated, sorted, and filtered list of contacts for the authenticated user.
+operationId: getContacts
+security:
+  - bearerAuth: []
+parameters:
+  - name: page
+    in: query
+    description: Page number (default is 1)
+    required: false
+    schema:
+      type: integer
+      default: 1
+  - name: perPage
+    in: query
+    description: Number of items per page (default is 10)
+    required: false
+    schema:
+      type: integer
+      default: 10
+  - name: sortBy
+    in: query
+    description: Field to sort by (e.g., name, email)
+    required: false
+    schema:
+      type: string
+      enum: [name, phoneNumber, email, contactType, createdAt, updatedAt]
+      default: name
+  - name: sortOrder
+    in: query
+    description: Sorting order (asc or desc)
+    required: false
+    schema:
+      type: string
+      enum: [asc, desc]
+      default: asc
+  - name: type
+    in: query
+    description: Filter by contact type (work, personal, home)
+    required: false
+    schema:
+      type: string
+      enum: [work, personal, home]
+  - name: isFavourite
+    in: query
+    description: Filter by favorite status (true or false)
+    required: false
+    schema:
+      type: boolean
+responses:
+  '200':
+    description: A list of contacts
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Contacts fetched successfully
+            status:
+              type: integer
+              example: 200
+            data:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/contact.yaml
+                page:
+                  type: integer
+                perPage:
+                  type: integer
+                totalItems:
+                  type: integer
+                totalPages:
+                  type: integer
+                hasPreviousPage:
+                  type: boolean
+                hasNextPage:
+                  type: boolean
+  '401':
+    $ref: ../../components/responses/401.yaml
+  '500':
+    description: Internal server error
