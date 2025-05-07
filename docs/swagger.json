@@ -2,12 +2,12 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0.0",
-    "title": "Students app",
+    "title": "Contact API",
     "license": {
       "name": "Apache 2.0",
       "url": "<http://www.apache.org/licenses/LICENSE-2.0.html>"
     },
-    "description": "This is a documentation of students app This is a documentation of students app"
+    "description": "This is a documentation of Contact API This is a documentation of Contact API"
   },
   "servers": [
     {
@@ -19,8 +19,8 @@
   ],
   "tags": [
     {
-      "name": "Students",
-      "description": "Operations about students."
+      "name": "Contact API",
+      "description": "Operations about Contact API."
     },
     {
       "name": "Auth",
@@ -30,9 +30,7 @@
   "paths": {
     "/contacts": {
       "get": {
-        "tags": [
-          "Students"
-        ],
+        "tags": ["Contact"],
         "summary": "Get all contacts",
         "description": "Retrieve a paginated, sorted, and filtered list of contacts for the authenticated user.",
         "operationId": "getContacts",
@@ -87,10 +85,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ],
+              "enum": ["asc", "desc"],
               "default": "asc"
             }
           },
@@ -101,11 +96,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "work",
-                "personal",
-                "home"
-              ]
+              "enum": ["work", "personal", "home"]
             }
           },
           {
@@ -177,9 +168,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Students"
-        ],
+        "tags": ["Contact"],
         "summary": "Create a new contact",
         "description": "Create a new contact for the authenticated user.",
         "operationId": "createContact",
@@ -220,11 +209,7 @@
                   },
                   "contactType": {
                     "type": "string",
-                    "enum": [
-                      "work",
-                      "home",
-                      "personal"
-                    ],
+                    "enum": ["work", "home", "personal"],
                     "example": "work"
                   }
                 }
@@ -270,9 +255,7 @@
     },
     "/contacts/{id}": {
       "get": {
-        "tags": [
-          "Students"
-        ],
+        "tags": ["Contact"],
         "summary": "Get a contact by ID",
         "description": "Retrieve a specific contact by its ID for the authenticated user.",
         "operationId": "getContactById",
@@ -328,9 +311,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Students"
-        ],
+        "tags": ["Contact"],
         "summary": "Update a contact",
         "description": "Update an existing contact by its ID for the authenticated user.",
         "operationId": "updateContact",
@@ -375,11 +356,7 @@
                   },
                   "contactType": {
                     "type": "string",
-                    "enum": [
-                      "work",
-                      "home",
-                      "personal"
-                    ],
+                    "enum": ["work", "home", "personal"],
                     "example": "personal"
                   }
                 }
@@ -426,9 +403,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Students"
-        ],
+        "tags": ["Contact"],
         "summary": "Delete a contact",
         "description": "Delete a contact by its ID for the authenticated user.",
         "operationId": "deleteContact",
@@ -532,11 +507,7 @@
           "contactType": {
             "description": "Type of contact",
             "type": "string",
-            "enum": [
-              "work",
-              "home",
-              "personal"
-            ],
+            "enum": ["work", "home", "personal"],
             "example": "work"
           },
           "photo": {
@@ -571,11 +542,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
+              "required": ["status", "message", "data"],
               "properties": {
                 "status": {
                   "type": "integer",
@@ -587,9 +554,7 @@
                 },
                 "data": {
                   "type": "object",
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "properties": {
                     "message": {
                       "type": "string",

@@ -4,7 +4,7 @@ import {
   createContact,
   deleteContactById,
   getAllContacts,
-  getStudentsById,
+  getContactById,
   updateContact,
 } from '../services/contacts';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -39,7 +39,7 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
-  const contact = await getStudentsById(contactId);
+  const contact = await getContactById(contactId);
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
